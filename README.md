@@ -9,10 +9,11 @@ Features (Implemented)
 * Sun/ moon path
 * Sky colour change
 * Colour change as a gradient
-
-Features (Not yet)
 * Stars - brightness change with night sky
 * Spots on the moon
+
+
+Features (Not yet)
 * Crescent moon
 * Sunrise/ Sunset
 * Clouds
