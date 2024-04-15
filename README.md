@@ -5,15 +5,24 @@
 
 Short animation of a day/night cycle made with HTML5 Canvas.
 
-Features (Implemented)
+Visual Features (Implemented)
 * Sun/ moon path
 * Sky colour change
 * Colour change as a gradient
 * Stars - brightness change with night sky
 * Spots on the moon
 
+Gameplay Features (Implemented)
+* Pausing on press of "p"
 
-Features (Not yet)
+
+
+
+
+
+
+
+Visual Features (Not yet)
 * Crescent moon
 * Sunrise/ Sunset
 * Clouds

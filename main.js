@@ -146,7 +146,7 @@ class Stars {
     }
 }
 
-var sunMoon = new SunMoon(0, innerHeight, 50, 0.5);
+var sunMoon = new SunMoon(0, innerHeight, 50, 4);
 var sky = new Sky();
 var stars = new Stars(150);
 var moonDetail = new MoonDetail();
