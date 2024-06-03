@@ -15,7 +15,10 @@ const nightSky = [0, 0, 50, 0.918];
 const daySky = [100, 150, 255, 0.8];
 const midSky = [30, 45, 80, 0.85];
 
-// visual vertical shift
+//height of the ground
+const groundHeight = innerHeight - 70;
+
+// visual vertical shift (for the sun to make it lower in the sky)
 const vvShift = 60;
 
 var isPaused = false;
@@ -47,7 +50,6 @@ function interpolateColors(color1, color2, factor) {
         return channel + (color2[index] - channel) * factor;
     });
 }
-
 
 class SunMoon {
     constructor(x, y, radius, dx) {
@@ -110,6 +112,24 @@ class MoonDetail {
     }
 }
 
+class Ground {
+    constructor(height){
+        this.groundHeight = height;
+        this.width = innerWidth;
+    }
+
+    draw(){
+        if (isday) {
+            c.fillStyle = 'rgba(0, 160, 0, 1)';
+        } else {
+            c.fillStyle = 'rgba(0, 100, 0, 1)';
+        }
+        c.fillRect(0, this.groundHeight, this.width, innerHeight);
+    }
+
+}
+
+
 class Stars {
     constructor(numStars){
         this.numStars = numStars;
@@ -146,11 +166,73 @@ class Stars {
     }
 }
 
+class MountainRange {
+
+    constructor()
+    {
+        
+        // 3 big peaks
+        // made of 4 triangles each
+        this.numPeaks = 3;
+        this.numTriangles = 4;
+        this.bigPeaksMid = [150, 300, 750];
+        this.bigPeaksWidth = [400, 324, 456];
+        this.bigPeaksHeight = [400, 324, 456];
+        // 6 filler peaks
+
+
+    }
+
+    draw()
+    {
+        console.log("hi");
+        this.drawBigPeaks();
+    }
+
+    drawBigPeaks()
+    {
+        for (let i = 0; i < this.numPeaks; i++)
+        {
+            let factor = this.bigPeaksWidth[i] / this.numTriangles;
+            for (let j = 0; j < this.numTriangles; j++)
+            {
+                let start = this.bigPeaksMid[i] - this.bigPeaksWidth[i] / 2 + factor*j;
+                let end = this.bigPeaksMid[i] - this.bigPeaksWidth[i] / 2 + factor*(j+1);
+                let height = this.bigPeaksHeight[i];
+                let peakmid = this.bigPeaksMid[i];
+                // using i and j change the colour up
+                let shade = 100+20*Math.random();
+                this.drawTriangleMountain(start, end, height, peakmid, 'rgba({shade},{shade},{shade},1)');
+            }
+        }
+    }
+
+    
+    drawFillerPeaks()
+    {
+
+    }
+
+    drawTriangleMountain(start, end, height, peakmid, colour) 
+    {
+        c.beginPath();
+        c.moveTo(start, groundHeight);
+        c.lineTo(peakmid, groundHeight - height);
+        c.lineTo(end, groundHeight);
+        c.closePath();
+        c.fillStyle = colour;
+        c.strokeStyle = 'rgba(0,0,0,1)';
+        c.fill();
+        c.stroke();
+    }
+}
+
 var sunMoon = new SunMoon(0, innerHeight, 50, 4);
 var sky = new Sky();
 var stars = new Stars(150);
 var moonDetail = new MoonDetail();
-
+var ground = new Ground(groundHeight);
+var mountainRange = new MountainRange();
 // logic each frame here
 function animate(){
 
@@ -169,17 +251,22 @@ function animate(){
     sky.draw();
     stars.draw();
     sunMoon.draw();
+
     moonDetail.draw(sunMoon.x, sunMoon.y);
+    mountainRange.draw();
+    ground.draw();
 }
 
 // event handling
 
-window.addEventListener('keydown', function(p){
-    if (p.key === 'p'){
+function keypress(e){
+    if (e.key === 'p'){
         isPaused = !isPaused;
     }
-});
+}
 
+
+window.addEventListener('keypress', keypress);
 
 
 animate(); // Start the animation loop
